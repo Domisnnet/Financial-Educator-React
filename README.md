@@ -255,13 +255,13 @@ Novas funcionalidades continuarão sendo implementadas.
 ---
 
 <div align="center">
-### 💰 Financial Educator
+💰 Financial Educator
 
 **Transformando educação financeira em tecnologia, organização e inteligência.**
 
 Desenvolvido com ❤️ utilizando **React**, **TypeScript**, **Vite** e **Firebase**.
-</div>
 
 <a href="https://github.com/Domisnnet"> 
   <img src="src/assets/images/DomisDev.png" width="90" style="border-radius: 50%" alt="Domisnnet GitHub"> 
 </a>
+</div>
