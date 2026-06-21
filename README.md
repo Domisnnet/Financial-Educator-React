@@ -4,11 +4,9 @@
 
 <h2 id="sobre-o-projeto">1. Financial Educator - Plataforma Inteligente de Educação Financeira 💰📈</h2>
 
-![Status do Deploy](https://img.shields.io/badge/Status-Em%20Desenvolvimento-brightgreen?style=flat-square)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
-[![Licença MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/Domisnnet/Financial-Educator-React/blob/main/LICENSE)
-![Plataforma](src/assets/images/financial.png)
+![Status do Deploy](https://img.shields.io/badge/Status-Online-brightgreen)
+![Tecnologias](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+[![Licença MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Domisnnet/Financial-Educator-React/blob/main/LICENSE)
 
 O **Financial Educator** é uma plataforma moderna desenvolvida para auxiliar usuários no gerenciamento financeiro pessoal, oferecendo uma experiência intuitiva para acompanhamento de receitas, despesas, investimentos, patrimônio e evolução financeira.
 
@@ -189,8 +187,8 @@ Siga os passos abaixo para fortalecer este projeto:
 
 Explore a arquitetura React completa no repositório oficial:
 
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=fff)
-[![Repositório](https://img.shields.io/badge/Repositório-Domisnnet%2FFinancial-Educator-React-61DAFB?style=for-the-badge&logo=github&labelColor=0d1117)](https://github.com/Domisnnet/Financial-Educator-React)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000)
+[![Repositório](https://img.shields.io/badge/Repositório-Domisnnet%2FFinancial--Educator--React-61DAFB?style=for-the-badge&logo=github&labelColor=0d1117)](https://github.com/Domisnnet/Financial-Educator-React)
 
 ### Estrutura do Projeto
 
