@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
@@ -8,10 +7,7 @@ interface StatCardProps {
   value: string;
   description?: string;
   icon: LucideIcon;
-  trend?: {
-    value: string;
-    isPositive: boolean;
-  };
+  trend?: { value: string; isPositive: boolean; };
   className?: string;
 }
 

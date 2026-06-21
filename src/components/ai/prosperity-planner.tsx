@@ -1,6 +1,3 @@
-
-"use client";
-
 import { useState } from "react";
 import { generateAISavingsPlan, AISavingsPlanGenerationOutput } from "@/ai/flows/ai-savings-plan-generation-flow";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";

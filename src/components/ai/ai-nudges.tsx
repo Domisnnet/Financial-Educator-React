@@ -1,6 +1,3 @@
-
-"use client";
-
 import { useEffect, useState } from "react";
 import { aiBehavioralNudges, AiBehavioralNudgesOutput } from "@/ai/flows/ai-behavioral-nudges";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -15,11 +12,9 @@ interface AINudgesProps {
 export function AINudges({ expenses, userProfile }: AINudgesProps) {
   const [nudges, setNudges] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const fetchNudges = async () => {
       setLoading(true);
-      // Group spendings for the nudge tool
       const currentSpendings = expenses.reduce((acc, curr) => {
         const existing = acc.find(s => s.category === curr.category);
         if (existing) {

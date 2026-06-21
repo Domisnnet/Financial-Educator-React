@@ -1,6 +1,3 @@
-
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +12,6 @@ interface ExpenseLoggerProps {
 }
 
 const categories: Category[] = ['Alimentação', 'Transporte', 'Lazer', 'Estudos', 'Saúde', 'Outros'];
-
 export function ExpenseLogger({ onAddExpense }: ExpenseLoggerProps) {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");

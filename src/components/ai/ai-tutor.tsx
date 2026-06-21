@@ -1,6 +1,3 @@
-
-"use client";
-
 import { useState } from "react";
 import { fineduAITutor, FinEduAITutorOutput } from "@/ai/flows/finedu-ai-tutor";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
