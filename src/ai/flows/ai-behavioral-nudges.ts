@@ -36,27 +36,17 @@ const AiBehavioralNudgesOutputSchema = z.object({
 });
 export type AiBehavioralNudgesOutput = z.infer<typeof AiBehavioralNudgesOutputSchema>;
 
-// Internal schema for prompt input after preprocessing
+// Schema interno simplificado: enviamos as instruções textuais já mastigadas para a IA
 const AiBehavioralNudgesPromptInputSchema = z.object({
-  userProfile: AiBehavioralNudgesInputSchema.shape.userProfile,
-  categoriesForAlerts: z.array(
-    z.object({
-      category: z.string().describe('The spending category.'),
-      currentAmount: z.number().describe('The current amount spent in this category.'),
-      limit: z.number().describe('The budget limit for this category.'),
-      percentageUsed: z.number().describe('The percentage of the budget limit used for this category.'),
-      status: z.enum(['near_limit', 'over_limit']).describe('The status of spending relative to the budget.'),
-    })
-  ).describe('A list of categories that are nearing or exceeding their budget limits.'),
+  instructions: z.string().describe('The complete constructed text instructions for the AI model.'),
 });
-export type AiBehavioralNudgesPromptInput = z.infer<typeof AiBehavioralNudgesPromptInputSchema>;
-
 
 const aiBehavioralNudgesPrompt = ai.definePrompt({
   name: 'aiBehavioralNudgesPrompt',
   input: {schema: AiBehavioralNudgesPromptInputSchema},
   output: {schema: AiBehavioralNudgesOutputSchema},
-  prompt: `Você é um educador financeiro inteligente e amigável, focado em ajudar jovens universitários e profissionais em início de carreira a gerenciar seu dinheiro.\n\nSua tarefa é analisar o perfil do usuário e seus gastos em relação aos limites do orçamento, e fornecer alertas proativos, motivadores e em linguagem simples.\nEvite termos técnicos complexos e use exemplos do cotidiano.\n\nPerfil do Usuário:\nIdade: {{{userProfile.age}}} anos\nRenda Mensal: R$ {{{userProfile.income}}}\nObjetivos Financeiros: {{{userProfile.financialGoals}}}\n\n{{#if categoriesForAlerts}}\nCom base nas suas informações de gastos, aqui estão algumas observações e sugestões para você:\n{{#each categoriesForAlerts}}\n  {{#if (eq status "near_limit")}}\n    - Você já utilizou {{percentageUsed}}% do seu orçamento de {{category}}. Que tal dar uma olhada nos seus gastos recentes e ver onde você pode economizar um pouco? Pequenas mudanças fazem uma grande diferença!\n  {{/if}}\n  {{#if (eq status "over_limit")}}\n    - Atenção! Seus gastos com {{category}} já excederam o limite de R$ {{limit}}. Não se preocupe, acontece! Que tal explorar alternativas mais econômicas para o restante do mês nesta área?\n  {{/if}}\n{{/each}}\n{{else}}\nParabéns! Seus gastos estão em dia e você está gerenciando bem seu dinheiro. Continue com o bom trabalho!\n{{/if}}\n\nPor favor, retorne suas observações e sugestões como uma lista JSON de strings, onde cada string é um "nudge" ou alerta.`,
+  // Usamos chaves triplas {{{ }}} para injetar o texto sem escapar caracteres HTML
+  prompt: `{{{instructions}}}`
 });
 
 export async function aiBehavioralNudges(input: AiBehavioralNudgesInput): Promise<AiBehavioralNudgesOutput> {
@@ -72,42 +62,44 @@ const aiBehavioralNudgesFlow = ai.defineFlow(
   async (input) => {
     const { currentSpendings, budgetLimits, userProfile } = input;
 
-    const categoriesForAlerts: AiBehavioralNudgesPromptInput['categoriesForAlerts'] = [];
+    let alertText = '';
+    let hasAlerts = false;
 
     budgetLimits.forEach((budget) => {
-      // Ensure budget.limit is positive to prevent division by zero or negative percentages
-      if (budget.limit <= 0) {
-        return; // Skip categories with invalid or zero limits
-      }
+      if (budget.limit <= 0) return;
+
       const spending = currentSpendings.find((s) => s.category === budget.category);
       const currentAmount = spending ? spending.amount : 0;
       const percentageUsed = Math.round((currentAmount / budget.limit) * 100);
 
       if (percentageUsed >= 100) {
-        categoriesForAlerts.push({
-          category: budget.category,
-          currentAmount,
-          limit: budget.limit,
-          percentageUsed,
-          status: 'over_limit',
-        });
-      } else if (percentageUsed >= 80) { // Nearing limit (80% to 99%)
-        categoriesForAlerts.push({
-          category: budget.category,
-          currentAmount,
-          limit: budget.limit,
-          percentageUsed,
-          status: 'near_limit',
-        });
+        hasAlerts = true;
+        alertText += `- Atenção! Seus gastos com ${budget.category} já excederam o limite de R$ ${budget.limit}. Não se preocupe, acontece! Que tal explorar alternativas mais econômicas para o restante do mês nesta área?\n`;
+      } else if (percentageUsed >= 80) {
+        hasAlerts = true;
+        alertText += `- Você já utilizou ${percentageUsed}% do seu orçamento de ${budget.category}. Que tal dar uma olhada nos seus gastos recentes e ver onde você pode economizar um pouco? Pequenas mudanças fazem uma grande diferença!\n`;
       }
     });
 
-    const promptInput: AiBehavioralNudgesPromptInput = {
-      userProfile,
-      categoriesForAlerts,
-    };
+    const contextText = hasAlerts 
+      ? `Com base nas suas informações de gastos, aqui estão algumas observações e sugestões para você:\n${alertText}`
+      : 'Parabéns! Seus gastos estão em dia e você está gerenciando bem seu dinheiro. Continue com o bom trabalho!\n';
 
-    const { output } = await aiBehavioralNudgesPrompt(promptInput);
+    // Montamos a string final do prompt aqui no ambiente TypeScript estável
+    const fullInstructions = `Você é um educador financeiro inteligente e amigável, focado em ajudar jovens universitários e profissionais em início de carreira a gerenciar seu dinheiro.
+
+Sua tarefa é analisar o perfil do usuário e seus gastos em relação aos limites do orçamento, e fornecer alertas proativos, motivadores e em linguagem simples.
+Evite termos técnicos complexos e use exemplos do cotidiano.
+
+Perfil do Usuário:
+Idade: ${userProfile.age} anos
+Renda Mensal: R$ ${userProfile.income}
+Objetivos Financeiros: ${userProfile.financialGoals}
+
+${contextText}
+Por favor, retorne suas observações e sugestões como uma lista JSON de strings, onde cada string é um "nudge" ou alerta.`;
+
+    const { output } = await aiBehavioralNudgesPrompt({ instructions: fullInstructions });
     return output!;
   }
 );
