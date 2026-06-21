@@ -1,4 +1,4 @@
-# ![GitHub repo size](https://img.shields.io/github/repo-size/Domisnnet/Financial-Educator-React?style=for-the-badge)# ![GitHub stars](https://img.shields.io/github/stars/Domisnnet/Financial-Educator-React?style=for-the-badge)# ![GitHub last commit](https://img.shields.io/github/last-commit/Domisnnet/Financial-Educator-React?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Domisnnet/Financial-Educator-React?style=for-the-badge)![GitHub stars](https://img.shields.io/github/stars/Domisnnet/Financial-Educator-React?style=for-the-badge)![GitHub last commit](https://img.shields.io/github/last-commit/Domisnnet/Financial-Educator-React?style=for-the-badge)
 
 <h2 id="sobre-o-projeto">1. Financial Educator - Plataforma Inteligente de Educação Financeira 💰📈</h2>
 
